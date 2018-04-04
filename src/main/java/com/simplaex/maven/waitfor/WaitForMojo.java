@@ -116,7 +116,7 @@ public class WaitForMojo extends AbstractMojo {
               break;
             case POST:
               final HttpPost httpPost = new HttpPost(uri);
-              httpPost.setEntity(new StringEntity(url.getBody()));
+              httpPost.setEntity(new StringEntity(Optional.ofNullable(url.getBody()).orElse("")));
               httpPost.setConfig(requestConfig);
               httpUriRequest = httpPost;
               break;

@@ -6,7 +6,31 @@ Maven Coordinates:
     <artifactId>waitfor-maven-plugin</artifactId>
     <version>1.0</version>
 
-## Configuration Example
+## Minimal Configuration Example
+
+      <plugin>
+        <groupId>com.simplaex</groupId>
+        <artifactId>waitfor-maven-plugin</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <executions>
+          <execution>
+            <id>wait-for-environment-to-be-up</id>
+            <phase>pre-integration-test</phase>
+            <goals>
+              <goal>waitfor</goal>
+            </goals>
+            <configuration>
+              <checks>
+                <check>
+                  <url>http://localhost:8080/health</url>
+                </check>
+              </checks>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+## Full Configuration Example
 
       <plugin>
         <groupId>com.simplaex</groupId>
