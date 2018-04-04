@@ -4,14 +4,14 @@ Maven Coordinates:
     
     <groupId>com.simplaex</groupId>
     <artifactId>waitfor-maven-plugin</artifactId>
-    <version>1.0</version>
+    <version>1.1</version>
 
 ## Minimal Configuration Example
 
       <plugin>
         <groupId>com.simplaex</groupId>
         <artifactId>waitfor-maven-plugin</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.1</version>
         <executions>
           <execution>
             <id>wait-for-environment-to-be-up</id>
@@ -35,7 +35,7 @@ Maven Coordinates:
       <plugin>
         <groupId>com.simplaex</groupId>
         <artifactId>waitfor-maven-plugin</artifactId>
-        <version>1.0</version>
+        <version>1.1</version>
         <executions>
           <execution>
             <id>wait-for-environment-to-be-up</id>
