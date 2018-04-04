@@ -12,7 +12,7 @@
 
   <name>Simplaex WaitFor Maven Plugin</name>
 
-  <description>Wait on a URL, used to wait until a URL is accessible via HTTP</description>
+  <description>Wait one or more URLs are accessible via HTTP</description>
 
   <licenses>
     <license>
