@@ -11,8 +11,15 @@
   <version>1.0</version>
 
   <name>Simplaex WaitFor Maven Plugin</name>
-
   <description>Wait one or more URLs are accessible via HTTP</description>
+  <url>https://github.com/simplaex/waitfor-maven-plugin</url>
+
+  <scm>
+    <connection>scm:git:ssh://git@github.com:simplaex/waitfor-maven-plugin.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com:simplaex/waitfor-maven-plugin.git
+    </developerConnection>
+    <url>https://github.com/simplaex/bedrock</url>
+  </scm>
 
   <licenses>
     <license>
