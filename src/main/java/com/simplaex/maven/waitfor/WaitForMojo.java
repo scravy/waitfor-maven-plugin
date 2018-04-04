@@ -75,7 +75,9 @@ public class WaitForMojo extends AbstractMojo {
 
   private void info(final String message) {
     if (!quiet) {
-      getLog().info(message);
+      getLog().info("");
+      getLog().info(">>> " + message);
+      getLog().info("");
     }
   }
 
@@ -157,9 +159,9 @@ public class WaitForMojo extends AbstractMojo {
             throw new MojoFailureException("Invalid url " + check.getUrl() + " for url with index " + index, exc);
           }
           if (results[index]) {
-            info("Checking " + uri + "...");
             continue;
           }
+          info("Checking " + uri + "...");
           final HttpUriRequest httpUriRequest = httpUriRequest(check, uri);
           for (final Header header : Optional.ofNullable(check.getHeaders()).orElse(new Header[0])) {
             httpUriRequest.setHeader(header.getName(), header.getValue());
