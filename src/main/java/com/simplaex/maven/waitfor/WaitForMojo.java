@@ -109,12 +109,12 @@ public class WaitForMojo extends AbstractMojo {
         return httpGet;
       case POST:
         final HttpPost httpPost = new HttpPost(uri);
-        httpPost.setEntity(new StringEntity(Optional.ofNullable(check.getBody()).orElse("")));
+        httpPost.setEntity(new StringEntity(Optional.ofNullable(check.getRequestBody()).orElse("")));
         httpPost.setConfig(requestConfig());
         return httpPost;
       case PUT:
         final HttpPut httpPut = new HttpPut(uri);
-        httpPut.setEntity(new StringEntity(Optional.ofNullable(check.getBody()).orElse("")));
+        httpPut.setEntity(new StringEntity(Optional.ofNullable(check.getRequestBody()).orElse("")));
         httpPut.setConfig(requestConfig());
         return httpPut;
       default:
@@ -140,6 +140,8 @@ public class WaitForMojo extends AbstractMojo {
         if (Seq.ofGenerator(ix -> results[ix], results.length).forAll(x -> x)) {
           alwaysInfo("All checks returned successfully.");
           break;
+        } else {
+          alwaysInfo("Not all checks passed. Trying again...");
         }
         final Duration elapsed = Duration.of(System.nanoTime() - startedAt, ChronoUnit.NANOS);
         if (elapsed.toMillis() > timeoutInMillis()) {
@@ -168,13 +170,19 @@ public class WaitForMojo extends AbstractMojo {
           }
           try (final CloseableHttpResponse httpResponse = httpClient.execute(httpUriRequest)) {
             final int statusCode = httpResponse.getStatusLine().getStatusCode();
+            final String response = EntityUtils.toString(httpResponse.getEntity());
             if (chatty) {
-              getLog().info(uri + " responded with: " + EntityUtils.toString(httpResponse.getEntity()));
-            } else {
-              EntityUtils.consume(httpResponse.getEntity());
+              getLog().info(uri + " responded with: " + response);
             }
             if (statusCode != expectedStatusCode) {
               info(uri + " returned " + statusCode + " instead of expected " + expectedStatusCode);
+              continue;
+            }
+            final String expectedResponse = check.getExpectedResponseBody();
+            if ((expectedResponse != null)
+              && (!expectedResponse.equals(response))) {
+
+              info(uri + " returned " + response + " instead of expected response " + expectedResponse);
               continue;
             }
             alwaysInfo(uri + " returned successfully (" + statusCode + ")");
