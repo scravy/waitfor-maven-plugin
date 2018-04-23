@@ -10,7 +10,9 @@ public class Check {
 
   HttpMethod method;
 
-  String body;
+  String requestBody;
+
+  String expectedResponseBody;
 
   Header[] headers;
 
@@ -38,12 +40,20 @@ public class Check {
     this.url = url;
   }
 
-  public String getBody() {
-    return body;
+  public String getRequestBody() {
+    return requestBody;
   }
 
-  public void setBody(final String body) {
-    this.body = body;
+  public String getExpectedResponseBody() {
+    return expectedResponseBody;
+  }
+
+  public void setRequestBody(final String requestBody) {
+    this.requestBody = requestBody;
+  }
+
+  public void setExpectedResponseBody(final String expectedResponseBody) {
+    this.expectedResponseBody = expectedResponseBody;
   }
 
   public Header[] getHeaders() {

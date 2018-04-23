@@ -109,12 +109,12 @@ public class WaitForMojo extends AbstractMojo {
         return httpGet;
       case POST:
         final HttpPost httpPost = new HttpPost(uri);
-        httpPost.setEntity(new StringEntity(Optional.ofNullable(check.getBody()).orElse("")));
+        httpPost.setEntity(new StringEntity(Optional.ofNullable(check.getRequestBody()).orElse("")));
         httpPost.setConfig(requestConfig());
         return httpPost;
       case PUT:
         final HttpPut httpPut = new HttpPut(uri);
-        httpPut.setEntity(new StringEntity(Optional.ofNullable(check.getBody()).orElse("")));
+        httpPut.setEntity(new StringEntity(Optional.ofNullable(check.getRequestBody()).orElse("")));
         httpPut.setConfig(requestConfig());
         return httpPut;
       default:
@@ -141,7 +141,7 @@ public class WaitForMojo extends AbstractMojo {
           alwaysInfo("All checks returned successfully.");
           break;
         } else {
-          alwaysInfo("All checks dint pass. Trying again..");
+          alwaysInfo("Not all checks passed. Trying again...");
         }
         final Duration elapsed = Duration.of(System.nanoTime() - startedAt, ChronoUnit.NANOS);
         if (elapsed.toMillis() > timeoutInMillis()) {
@@ -173,14 +173,12 @@ public class WaitForMojo extends AbstractMojo {
             final String response = EntityUtils.toString(httpResponse.getEntity());
             if (chatty) {
               getLog().info(uri + " responded with: " + response);
-            } else {
-              EntityUtils.consume(httpResponse.getEntity());
             }
             if (statusCode != expectedStatusCode) {
               info(uri + " returned " + statusCode + " instead of expected " + expectedStatusCode);
               continue;
             }
-            final String expectedResponse = check.getBody();
+            final String expectedResponse = check.getExpectedResponseBody();
             if ((expectedResponse != null)
               && (!expectedResponse.equals(response))) {
 

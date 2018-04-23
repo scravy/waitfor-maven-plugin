@@ -24,6 +24,10 @@ Maven Coordinates:
                 <check>
                   <url>http://localhost:8080/health</url>
                 </check>
+                <check>
+                  <url>http://localhost:8080/loaded_components</url>
+                  <expectedResponseBody>{"component_1": "loaded", "component_2": "loaded"}</expectedResponseBody>
+                </check>
               </checks>
             </configuration>
           </execution>
@@ -64,11 +68,11 @@ Maven Coordinates:
                   <url>http://localhost:9090/resource</url>
                   <method>POST</method>
                   <statusCode>201</statusCode>
-                  <body>
+                  <requestBody>
                   {
                     "some": "thing"
                   }
-                  </body>
+                  </requestBody>
                   <headers>
                     <header>
                       <name>Content-Type</name>
