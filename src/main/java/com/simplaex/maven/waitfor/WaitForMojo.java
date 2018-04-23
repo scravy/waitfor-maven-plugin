@@ -140,6 +140,8 @@ public class WaitForMojo extends AbstractMojo {
         if (Seq.ofGenerator(ix -> results[ix], results.length).forAll(x -> x)) {
           alwaysInfo("All checks returned successfully.");
           break;
+        } else {
+          alwaysInfo("All checks dint pass. Trying again..");
         }
         final Duration elapsed = Duration.of(System.nanoTime() - startedAt, ChronoUnit.NANOS);
         if (elapsed.toMillis() > timeoutInMillis()) {
@@ -168,13 +170,21 @@ public class WaitForMojo extends AbstractMojo {
           }
           try (final CloseableHttpResponse httpResponse = httpClient.execute(httpUriRequest)) {
             final int statusCode = httpResponse.getStatusLine().getStatusCode();
+            final String response = EntityUtils.toString(httpResponse.getEntity());
             if (chatty) {
-              getLog().info(uri + " responded with: " + EntityUtils.toString(httpResponse.getEntity()));
+              getLog().info(uri + " responded with: " + response);
             } else {
               EntityUtils.consume(httpResponse.getEntity());
             }
             if (statusCode != expectedStatusCode) {
               info(uri + " returned " + statusCode + " instead of expected " + expectedStatusCode);
+              continue;
+            }
+            final String expectedResponse = check.getBody();
+            if ((expectedResponse != null)
+              && (!expectedResponse.equals(response))) {
+
+              info(uri + " returned " + response + " instead of expected response " + expectedResponse);
               continue;
             }
             alwaysInfo(uri + " returned successfully (" + statusCode + ")");
