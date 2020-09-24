@@ -40,6 +40,12 @@ public class WaitForMojo extends AbstractMojo {
   @Parameter(defaultValue = "false")
   boolean chatty;
 
+  /**
+   * Set this to "true" to bypass tests.
+   */
+  @Parameter( defaultValue = "false" )
+  protected boolean skip;
+
   public Check[] getChecks() {
     return checks;
   }
@@ -128,6 +134,11 @@ public class WaitForMojo extends AbstractMojo {
    * @see org.apache.maven.plugin.AbstractMojo#execute()
    */
   public void execute() throws MojoFailureException {
+    if (skip) {
+      alwaysInfo( "Checks are skipped." );
+      return;
+    }
+
     if (this.checks == null || this.checks.length == 0) {
       alwaysWarn("No checks configured");
       return;

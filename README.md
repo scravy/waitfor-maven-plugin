@@ -48,6 +48,7 @@ Maven Coordinates:
               <goal>waitfor</goal>
             </goals>
             <configuration>
+              <skip>false</skip><!-- this is the default -->
               <chatty>false</chatty><!-- this is the default -->
               <quiet>false</quiet><!-- this is the default -->
               <timeoutSeconds>30</timeoutSeconds><!-- this is the default -->
