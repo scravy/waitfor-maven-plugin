@@ -8,7 +8,7 @@ import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.*;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoFailureException;
@@ -143,7 +143,7 @@ public class WaitForMojo extends AbstractMojo {
       alwaysWarn("No checks configured");
       return;
     }
-    try (final CloseableHttpClient httpClient = HttpClients.createDefault()) {
+    try (final CloseableHttpClient httpClient = HttpClientBuilder.create().disableAutomaticRetries().build()) {
       final ArrayMap<Integer, Check> checks = indexedChecks();
       final boolean[] results = new boolean[this.checks.length];
       final long startedAt = System.nanoTime();
@@ -152,7 +152,7 @@ public class WaitForMojo extends AbstractMojo {
           alwaysInfo("All checks returned successfully.");
           break;
         } else {
-          alwaysInfo("Not all checks passed. Trying again...");
+          info("Not all checks passed. Trying again...");
         }
         final Duration elapsed = Duration.of(System.nanoTime() - startedAt, ChronoUnit.NANOS);
         if (elapsed.toMillis() > timeoutInMillis()) {
