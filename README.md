@@ -37,9 +37,9 @@ Maven Coordinates:
 ## Full Configuration Example
 
       <plugin>
-        <groupId>com.simplaex</groupId>
+        <groupId>de.scravy</groupId>
         <artifactId>waitfor-maven-plugin</artifactId>
-        <version>1.1</version>
+        <version>1.3</version>
         <executions>
           <execution>
             <id>wait-for-environment-to-be-up</id>
