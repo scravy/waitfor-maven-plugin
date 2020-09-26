@@ -1,4 +1,4 @@
-package com.simplaex.maven.waitfor;
+package de.scravy.maven.waitfor;
 
 public enum HttpMethod {
   HEAD,

@@ -1,9 +1,9 @@
-package com.simplaex.maven.waitfor;
+package de.scravy.maven.waitfor;
 
-import com.simplaex.bedrock.ArrayMap;
-import com.simplaex.bedrock.Control;
-import com.simplaex.bedrock.Pair;
-import com.simplaex.bedrock.Seq;
+import de.scravy.bedrock.ArrayMap;
+import de.scravy.bedrock.Control;
+import de.scravy.bedrock.Pair;
+import de.scravy.bedrock.Seq;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.*;
 import org.apache.http.entity.StringEntity;
