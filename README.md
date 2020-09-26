@@ -2,9 +2,9 @@
 
 Maven Coordinates:
     
-    <groupId>com.simplaex</groupId>
+    <groupId>de.scravy</groupId>
     <artifactId>waitfor-maven-plugin</artifactId>
-    <version>1.1</version>
+    <version>1.3</version>
 
 ## Minimal Configuration Example
 
