@@ -1,4 +1,4 @@
-# waitfor-maven-plugin [![Build Status](https://travis-ci.org/scravy/waitfor-maven-plugin.svg?branch=master)](https://travis-ci.org/simplaex/waitfor-maven-plugin)
+# waitfor-maven-plugin [![Build Status](https://travis-ci.org/scravy/waitfor-maven-plugin.svg?branch=main)](https://travis-ci.org/scravy/waitfor-maven-plugin)
 
 Maven Coordinates:
     
