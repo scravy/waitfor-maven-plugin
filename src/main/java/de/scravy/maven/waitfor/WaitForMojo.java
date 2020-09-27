@@ -156,7 +156,6 @@ public class WaitForMojo extends AbstractMojo {
         }
         for (int index = 0; index < checks.length; index += 1) {
           final Check check = checks[index];
-          final int expectedStatusCode = check.getStatusCode() == 0 ? 200 : check.getStatusCode();
           final URI uri;
           try {
             uri = check.getUrl().toURI();
@@ -177,15 +176,7 @@ public class WaitForMojo extends AbstractMojo {
             if (chatty) {
               getLog().info(uri + " responded with: " + response);
             }
-            if (statusCode != expectedStatusCode) {
-              info(uri + " returned " + statusCode + " instead of expected " + expectedStatusCode);
-              continue;
-            }
-            final String expectedResponse = check.getExpectedResponseBody();
-            if ((expectedResponse != null)
-              && (!expectedResponse.equals(response))) {
-
-              info(uri + " returned " + response + " instead of expected response " + expectedResponse);
+            if (!checkResponse(uri, statusCode, response, check)) {
               continue;
             }
             alwaysInfo(uri + " returned successfully (" + statusCode + ")");
@@ -200,5 +191,19 @@ public class WaitForMojo extends AbstractMojo {
     } catch (final Exception exc) {
       throw new MojoFailureException(exc.getMessage(), exc);
     }
+  }
+
+  private boolean checkResponse(final URI uri, final int statusCode, final String response, final Check check) {
+    final int expectedStatusCode = check.getStatusCode() == 0 ? 200 : check.getStatusCode();
+    if (statusCode != expectedStatusCode) {
+      info(uri + " returned " + statusCode + " instead of expected " + expectedStatusCode);
+      return false;
+    }
+    final String expectedResponse = check.getExpectedResponseBody();
+    if ((expectedResponse != null) && (!expectedResponse.equals(response))) {
+      info(uri + " returned " + response + " instead of expected response " + expectedResponse);
+      return false;
+    }
+    return true;
   }
 }
