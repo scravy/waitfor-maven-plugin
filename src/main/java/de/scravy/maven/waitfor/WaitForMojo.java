@@ -1,8 +1,6 @@
 package de.scravy.maven.waitfor;
 
-import de.scravy.bedrock.ArrayMap;
 import de.scravy.bedrock.Control;
-import de.scravy.bedrock.Pair;
 import de.scravy.bedrock.Seq;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.*;
@@ -43,7 +41,7 @@ public class WaitForMojo extends AbstractMojo {
   /**
    * Set this to "true" to bypass tests.
    */
-  @Parameter( defaultValue = "false" )
+  @Parameter(defaultValue = "false")
   protected boolean skip;
 
   public Check[] getChecks() {
@@ -60,10 +58,6 @@ public class WaitForMojo extends AbstractMojo {
 
   public void setTimeoutSeconds(final int timeoutSeconds) {
     this.timeoutSeconds = timeoutSeconds;
-  }
-
-  private ArrayMap<Integer, Check> indexedChecks() {
-    return ArrayMap.ofSeq(Seq.rangeExclusive(0, this.checks.length).zip(Seq.ofArray(this.checks)));
   }
 
   private int timeoutInMillis() {
@@ -135,7 +129,7 @@ public class WaitForMojo extends AbstractMojo {
    */
   public void execute() throws MojoFailureException {
     if (skip) {
-      alwaysInfo( "Checks are skipped." );
+      alwaysInfo("Checks are skipped.");
       return;
     }
 
@@ -144,7 +138,6 @@ public class WaitForMojo extends AbstractMojo {
       return;
     }
     try (final CloseableHttpClient httpClient = HttpClientBuilder.create().disableAutomaticRetries().build()) {
-      final ArrayMap<Integer, Check> checks = indexedChecks();
       final boolean[] results = new boolean[this.checks.length];
       final long startedAt = System.nanoTime();
       for (int i = 0; ; i += 1) {
@@ -161,9 +154,8 @@ public class WaitForMojo extends AbstractMojo {
         if (i > 0) {
           Control.sleep(Duration.ofMillis(checkEveryMillis));
         }
-        for (final Pair<Integer, Check> urlDefinition : checks) {
-          final int index = urlDefinition.fst();
-          final Check check = urlDefinition.snd();
+        for (int index = 0; index < checks.length; index += 1) {
+          final Check check = checks[index];
           final int expectedStatusCode = check.getStatusCode() == 0 ? 200 : check.getStatusCode();
           final URI uri;
           try {
