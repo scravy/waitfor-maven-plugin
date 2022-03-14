@@ -52,6 +52,7 @@ Maven Coordinates:
               <chatty>false</chatty><!-- this is the default -->
               <quiet>false</quiet><!-- this is the default -->
               <insecure>false</insecure><!-- this is the default -->
+              <redirect>true</redirect><!-- this is the default -->
               <timeoutSeconds>30</timeoutSeconds><!-- this is the default -->
               <checkEveryMillis>500</checkEveryMillis><!-- this is the default -->
               <checks>
@@ -95,3 +96,7 @@ Maven Coordinates:
 The `insecure` flag allows bypassing https certificate checks. This is handy when using self-signed certificates for
 example.
 
+### redirect
+
+The `redirect` flag allows following or not the 302 REDIRECT response. Set it to `false` to avoid redirect.
+If a redirect is sent by the server, the `statusCode` will be `302`.
