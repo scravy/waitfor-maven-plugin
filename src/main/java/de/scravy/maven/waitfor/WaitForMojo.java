@@ -4,9 +4,13 @@ import de.scravy.bedrock.Control;
 import de.scravy.bedrock.Seq;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.*;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.ssl.SSLContextBuilder;
 import org.apache.http.util.EntityUtils;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoFailureException;
@@ -16,6 +20,9 @@ import org.apache.maven.plugins.annotations.Parameter;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.Optional;
@@ -37,6 +44,12 @@ public class WaitForMojo extends AbstractMojo {
 
   @Parameter(defaultValue = "false")
   boolean chatty;
+
+  /**
+   * Set this to true to accept insecure URLs when using https (self-signed certificates)
+   */
+  @Parameter(defaultValue = "false")
+  boolean insecure;
 
   /**
    * Set this to "true" to bypass tests.
@@ -122,6 +135,22 @@ public class WaitForMojo extends AbstractMojo {
     }
   }
 
+  private CloseableHttpClient getHttpClient() {
+    final HttpClientBuilder clientBuilder = HttpClients.custom();
+    clientBuilder.disableAutomaticRetries();
+    if (insecure) {
+      try {
+        final SSLContextBuilder builder = new SSLContextBuilder();
+        builder.loadTrustMaterial(null, new TrustSelfSignedStrategy());
+        final SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(builder.build());
+        clientBuilder.setSSLSocketFactory(sslsf);
+      } catch (NoSuchAlgorithmException|KeyStoreException|KeyManagementException e) {
+        warn("Can not generate the ssl context for self signed certificates. " + e.getMessage());
+      }
+    }
+    return clientBuilder.build();
+  }
+
   /*
    * (non-Javadoc)
    *
@@ -137,7 +166,7 @@ public class WaitForMojo extends AbstractMojo {
       alwaysWarn("No checks configured");
       return;
     }
-    try (final CloseableHttpClient httpClient = HttpClientBuilder.create().disableAutomaticRetries().build()) {
+    try (final CloseableHttpClient httpClient = getHttpClient()) {
       final boolean[] results = new boolean[this.checks.length];
       final long startedAt = System.nanoTime();
       for (int i = 0; ; i += 1) {

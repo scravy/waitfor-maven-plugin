@@ -51,6 +51,7 @@ Maven Coordinates:
               <skip>false</skip><!-- this is the default -->
               <chatty>false</chatty><!-- this is the default -->
               <quiet>false</quiet><!-- this is the default -->
+              <insecure>false</insecure><!-- this is the default -->
               <timeoutSeconds>30</timeoutSeconds><!-- this is the default -->
               <checkEveryMillis>500</checkEveryMillis><!-- this is the default -->
               <checks>
@@ -86,3 +87,11 @@ Maven Coordinates:
           </execution>
         </executions>
       </plugin>
+
+## Options
+
+### insecure
+
+The `insecure` flag allows bypassing https certificate checks. This is handy when using self-signed certificates for
+example.
+
