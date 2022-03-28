@@ -52,6 +52,12 @@ public class WaitForMojo extends AbstractMojo {
   boolean insecure;
 
   /**
+   * Set this to false to disable redirect following
+   */
+  @Parameter(defaultValue = "true")
+  boolean redirect;
+
+  /**
    * Set this to "true" to bypass tests.
    */
   @Parameter(defaultValue = "false")
@@ -148,6 +154,11 @@ public class WaitForMojo extends AbstractMojo {
         warn("Can not generate the ssl context for self signed certificates. " + e.getMessage());
       }
     }
+
+    if (!redirect) {
+      clientBuilder.disableRedirectHandling();
+    }
+
     return clientBuilder.build();
   }
 
