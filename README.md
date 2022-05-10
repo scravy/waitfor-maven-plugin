@@ -4,14 +4,14 @@ Maven Coordinates:
     
     <groupId>de.scravy</groupId>
     <artifactId>waitfor-maven-plugin</artifactId>
-    <version>1.3</version>
+    <version>1.4</version>
 
 ## Minimal Configuration Example
 
       <plugin>
         <groupId>de.scravy</groupId>
         <artifactId>waitfor-maven-plugin</artifactId>
-        <version>1.3</version>
+        <version>1.4</version>
         <executions>
           <execution>
             <id>wait-for-environment-to-be-up</id>
@@ -39,7 +39,7 @@ Maven Coordinates:
       <plugin>
         <groupId>de.scravy</groupId>
         <artifactId>waitfor-maven-plugin</artifactId>
-        <version>1.3</version>
+        <version>1.4</version>
         <executions>
           <execution>
             <id>wait-for-environment-to-be-up</id>
